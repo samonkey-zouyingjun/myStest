@@ -1,3 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SambaProvider</string>
+  <string name="app_name">Samba客户端</string>
+
+  <string name="share_path">Share Path e.g. smb://server/share</string>
+  <string name="domain">域</string>
+  <string name="username">用户名</string>
+  <string name="password">密码</string>
+
+  <string name="needs_password">我的文件共享需要一个密码</string>
+
+  <string name="mount">挂载</string>
+  <string name="cancel">取消</string>
+
+  <string name="no_active_network">未检测到活动网络 请检查您的网络</string>
+  <string name="share_path_malformed">共享路径格式不正确</string>
+  <string name="share_already_mounted">此享已被挂载.</string>
+  <string name="share_mounted">文件共享已被挂载</string>
+  <string name="failed_mounting">无法挂载共享。 请再试一次</string>
+  <string name="credential_error">拒绝阅读。请检查您的证件和权限</string>
+
+  <string name="mounting_share">挂载文件共享&#8230;</string>
+
+  <string name="view_folder_denied">查看此文件夹需要获取许可</string>
+
+  <string name="gplv3_link">
+    <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GPL v3.0</a>
+  </string>
+
+  <!-- Menu Items -->
+  <string name="send_feedback">Send feedback</string>
+
+  <string name="no_web_browser">It needs a web browser to send feedback.</string>
+
+  <string name="browsing_root_name">Samba Shares</string>
+  <string name="browsing_waiting_prompt">Looking for shares…</string>
+
+  <string name="pin_this_share">Pin this share</string>
+  <string name="login">登录</string>
+  <string name="authenticating">验证...</string>
+  <string name="empty_credentials">用户名和密码不能为空！</string>
 </resources>
