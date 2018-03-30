@@ -51,13 +51,11 @@ import com.evideo.sambaprovider.ShareManager;
 import com.evideo.sambaprovider.TaskManager;
 import com.evideo.sambaprovider.base.AuthFailedException;
 import com.evideo.sambaprovider.base.OnTaskFinishedCallback;
-import com.evideo.sambaprovider.browsing.Iconfig;
 import com.evideo.sambaprovider.browsing.NetworkBrowser;
 import com.evideo.sambaprovider.cache.DocumentCache;
 import com.evideo.sambaprovider.document.DocumentMetadata;
 import com.evideo.sambaprovider.nativefacade.SmbClient;
 import com.evideo.sambaprovider.provider.SambaDocumentsProvider;
-import com.evideo.sambaprovider.util.Logs;
 import com.evideo.sambaprovider.util.UrlUtils;
 
 import java.util.List;
@@ -398,7 +396,7 @@ public class MountServerActivity extends AppCompatActivity {
     /**
      * 打开目标服务器
      */
-    private void openDir(){
+    /*private void openDir(){
         String service = "ZOUYINGJUN-PC";
         String user = "zouyingjun";
         String pwd = "inzone";
@@ -414,5 +412,5 @@ public class MountServerActivity extends AppCompatActivity {
                 Logs.dBrowsing(TAG, "openDir: "+u);
             }
         }
-    }
+    }*/
 }

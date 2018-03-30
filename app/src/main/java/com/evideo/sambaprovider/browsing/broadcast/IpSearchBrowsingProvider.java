@@ -18,6 +18,8 @@
 package com.evideo.sambaprovider.browsing.broadcast;
 
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.evideo.sambaprovider.browsing.NetworkBrowsingProvider;
 import com.evideo.sambaprovider.browsing.ServiceHelper;
 import com.evideo.sambaprovider.thread.TerminableThreadPool;
@@ -41,7 +43,7 @@ public class IpSearchBrowsingProvider implements NetworkBrowsingProvider {
     private TerminableThreadPool mSearchThread3;
     private TerminableThreadPool mSearchThread4;
     private TerminableThreadPool mSearchThread5;
-    private static final String TAG = "IpSearchBrowsingProvider";
+    private static final String TAG = "IpSearchBrowsing";
 
     public IpSearchBrowsingProvider() {
     }
@@ -120,7 +122,7 @@ public class IpSearchBrowsingProvider implements NetworkBrowsingProvider {
 
                         BroadcastUtils.sendNameQueryBroadcast(socket, address, i);
 
-                        socket.setSoTimeout(1000);
+                        socket.setSoTimeout(500);
                         while (true) {
                             try {
                                 byte[] buf = new byte[1024];
@@ -129,6 +131,7 @@ public class IpSearchBrowsingProvider implements NetworkBrowsingProvider {
                                 List<String> strings = BroadcastUtils.extractServers(packet.getData(), i);
 
                                 for (String name : strings) {
+                                    Log.d(TAG, "run: "+name);
                                     //更新道ServiceProvider 注意线程安全
                                     ServiceHelper.getInstance().addServiceData(broadcastAddress,name);
                                 }

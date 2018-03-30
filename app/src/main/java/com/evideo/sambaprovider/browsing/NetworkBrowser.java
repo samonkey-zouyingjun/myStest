@@ -71,27 +71,49 @@ public class NetworkBrowser {
     }
 
 
+    public List<DirectoryEntry> getRootDir(String serviceName){
+        List<DirectoryEntry> servers = new ArrayList<>();
+        try {
+            servers = getDirectoryChildren
+                    (mClient.openDir("smb://" + serviceName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return servers;    }
+
+    private static List<DirectoryEntry> getDirectoryChildren(SmbDir dir) throws IOException {
+        List<DirectoryEntry> children = new ArrayList<>();
+
+        DirectoryEntry currentEntry;
+        while ((currentEntry = dir.readDir()) != null) {
+            children.add(currentEntry);
+        }
+
+        return children;
+    }
+
     /**
      * 根据服务名获取子目录
      */
-    public List<String> getChildDirByUri(Iconfig iconfig) {
-        String serverUri = creatUrlByPwd(iconfig);
+    public List<DirectoryEntry> getChildDirByUri(String serverUri) {
         Logs.dBrowsing(TAG, "getChildDirByUri: " + serverUri);
         if (mClient == null) {
             Logs.eBrowsing(TAG, "getChildDirByPWD mClient is null!");
             return null;
         }
 
-        List<String> shares = new ArrayList<>();
+        List<DirectoryEntry> de = new ArrayList<>();
         try {
             SmbDir serverDir = mClient.openDir(serverUri);
 
             DirectoryEntry shareEntry;
             while ((shareEntry = serverDir.readDir()) != null) {
-                if (shareEntry.getType() == DirectoryEntry.FILE_SHARE) {
+
+                de.add(shareEntry);
+                /*if (shareEntry.getType() == DirectoryEntry.FILE_SHARE) {
 
                     String path = shareEntry.getName().trim();
-          /*过滤"$"结尾的文件夹*/
+                    *//*过滤"$"结尾的文件夹*//*
                     if (TextUtils.isEmpty(path) || path.endsWith("$")) {
                         continue;
                     }
@@ -99,13 +121,13 @@ public class NetworkBrowser {
                     shares.add(serverUri + "/" + shareEntry.getName().trim());
                 } else {
                     Logs.iBrowsing(TAG, "Unsupported entry type: " + String.valueOf(shareEntry.getType()));
-                }
+                }*/
             }
         } catch (IOException e) {
-            shares = null;
+            de = null;
             Logs.eBrowsing(TAG, "getChildDirByUri:" + e.toString());
         }
-        return shares;
+        return de;
     }
 
 
@@ -113,7 +135,7 @@ public class NetworkBrowser {
      * 获取子路径
      * https://jcifs.samba.org/src/docs/api/jcifs/smb/SmbFile.html
      */
-    public String creatUrlByPwd(Iconfig config) {
+    public static String creatUrlByPwd(Iconfig config) {
 
         if (config == null) {
             return SMB_BROWSING_URI.toString();

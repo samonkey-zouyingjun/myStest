@@ -29,7 +29,7 @@
 #include <asm/errno.h>
 #include <errno.h>
 
-#define CLASS_PREFIX "com/google/android/sambadocumentsprovider"
+#define CLASS_PREFIX "com/evideo/sambaprovider"
 
 #define TAG "JniHelper"
 

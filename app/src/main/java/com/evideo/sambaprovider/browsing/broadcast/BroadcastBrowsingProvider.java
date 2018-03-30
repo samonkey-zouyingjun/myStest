@@ -42,7 +42,6 @@ public class BroadcastBrowsingProvider implements NetworkBrowsingProvider {
      * 效果差，速度快
      * 由255自动分发，如果环境好的话能较快获取搜索结果，但是可靠性差，常常搜索不到
      * @return
-     * @throws BrowsingException
      */
     @Override
     public void getServersAsy() {

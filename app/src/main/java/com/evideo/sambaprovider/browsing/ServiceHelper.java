@@ -22,6 +22,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ import java.util.Map;
  * 统一管理服务名数据 ip和对应的服务器列表
  */
 
-public class ServiceHelper {
+public class ServiceHelper{
 
     public static final String IP_LAN_DEFAULT = "255.255.255.255";
     private static final ServiceHelper ourInstance = new ServiceHelper();
@@ -87,5 +88,27 @@ public class ServiceHelper {
 
     public Map<String, List<String>> getMap() {
         return mMap;
+    }
+
+    /**
+     * 获取可用设备
+     * @return
+     */
+    public List<Device> getDevice(){
+        if (mMap == null){
+            return null;
+        }
+        List<Device> devices = new ArrayList<>();
+        Iterator it = mMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String ip = (String) entry.getKey();
+            List<String> services = (List<String>) entry.getValue();
+            Device device = new Device();
+            device.setIp(ip);
+            device.setServices(services);
+            devices.add(device);
+        }
+        return devices;
     }
 }
