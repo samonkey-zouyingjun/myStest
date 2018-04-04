@@ -39,8 +39,8 @@ public class ReadFileTask extends AsyncTask<Void, Void, Void> {
 
   private ByteBuffer mBuffer;
 
-  ReadFileTask(String uri, SmbClient client, ParcelFileDescriptor pfd,
-               ByteBufferPool bufferPool) {
+  public ReadFileTask(String uri, SmbClient client, ParcelFileDescriptor pfd,
+                      ByteBufferPool bufferPool) {
     mUri = uri;
     mClient = client;
     mPfd = pfd;

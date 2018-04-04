@@ -91,7 +91,7 @@ public class AuthActivity extends AppCompatActivity {
     mSharePathEditText.setText(shareUri);
     mSharePathEditText.setEnabled(false);
 
-    passwordCheckbox.setVisibility(View.GONE);
+//    passwordCheckbox.setVisibility(View.GONE);
     mPinShareCheckbox.setVisibility(View.VISIBLE);
 
     Button mLoginButton = (Button) findViewById(R.id.mount);

@@ -29,6 +29,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,16 +40,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.evideo.sambaprovider.ImageActivity;
 import com.evideo.sambaprovider.R;
 import com.evideo.sambaprovider.SambaProviderApplication;
 import com.evideo.sambaprovider.ShareManager;
 import com.evideo.sambaprovider.TaskManager;
+import com.evideo.sambaprovider.VideoActivity;
 import com.evideo.sambaprovider.base.AuthFailedException;
 import com.evideo.sambaprovider.base.OnTaskFinishedCallback;
 import com.evideo.sambaprovider.browsing.NetworkBrowser;
@@ -264,6 +268,42 @@ public class MountServerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(100 == requestCode){
+            //content://com.evideo.sambaproviderm/document/smb%3A%2F%2F192.168.31.29%2Fshare%2Fa%2Fstorage_photos.png
+            Uri data1 = data.getData();
+
+            Log.d(TAG, "onActivityResult: url:"+data1);
+            Intent intent = new Intent(this,VideoActivity.class);
+            intent.setData(data1);
+            startActivity(intent);
+
+        }
+    }
+
+    private void startUrlActivity(Uri data1) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(data1.toString());
+        if (TextUtils.isEmpty(extension)) {
+            return;
+        }
+        extension = extension.toLowerCase();
+
+
+        if(extension.contains("png")){
+            Intent intent = new Intent(this,ImageActivity.class);
+            intent.setData(data1);
+            startActivity(intent);
+        }else if(extension.contains("mp4")){
+
+
+            Intent intent = new Intent(this,VideoActivity.class);
+            intent.setData(data1);
+            startActivity(intent);
+        }
+    }
+
     /**
      * 获取搜索列表
      */
@@ -305,6 +345,7 @@ public class MountServerActivity extends AppCompatActivity {
 
         if (mShareManager.isShareMounted(metadata.getUri().toString())) {
             showMessage(R.string.share_already_mounted);
+            launchFileManager(metadata);
             return;
         }
 
@@ -318,7 +359,7 @@ public class MountServerActivity extends AppCompatActivity {
                 dialog.dismiss();
                 switch (status) {
                     case SUCCEEDED:
-                        clearInputs();
+//                        clearInputs();
                         launchFileManager(metadata);
                         showMessage(R.string.share_mounted);
                         break;
@@ -359,10 +400,12 @@ public class MountServerActivity extends AppCompatActivity {
 
     private boolean launchFileManager(String action, Uri data) {
         try {
-            final Intent intent = new Intent(action);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//            intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.setData(data);
-            startActivity(intent);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent,100);
             return true;
         } catch (ActivityNotFoundException e) {
             return false;
@@ -386,31 +429,11 @@ public class MountServerActivity extends AppCompatActivity {
         mNeedPasswordCheckbox.setChecked(needsPassword);
 
         // TODO: Add animation
-        mPasswordHideGroup.setVisibility(needsPassword ? View.VISIBLE : View.GONE);
+//        mPasswordHideGroup.setVisibility(needsPassword ? View.VISIBLE : View.GONE);
+        mPasswordHideGroup.setVisibility(View.VISIBLE);
         if (!needsPassword) {
-            clearCredentials();
+//            clearCredentials();
         }
     }
 
-
-    /**
-     * 打开目标服务器
-     */
-    /*private void openDir(){
-        String service = "ZOUYINGJUN-PC";
-        String user = "zouyingjun";
-        String pwd = "inzone";
-
-
-        NetworkBrowser browser = new NetworkBrowser(mClient);
-
-        Iconfig iconfig = new Iconfig("ZOUYINGJUN-PC");
-        List<String> childDirByUri = browser.getChildDirByUri(iconfig);
-
-        if(childDirByUri != null){
-            for (String u:childDirByUri) {
-                Logs.dBrowsing(TAG, "openDir: "+u);
-            }
-        }
-    }*/
 }

@@ -27,6 +27,13 @@ import java.lang.annotation.RetentionPolicy;
  * a workgroup, a share or a file.
  */
 public class DirectoryEntry {
+  /**
+   * smb://zouyingjun-pc/share  or \\192.168.199.127/share
+   *
+   * WORKGROUP :工作组
+   * SERVER    :服务名(zouyingjun-pc)或ip
+   * FILE_SHARE:共享文件夹(share)
+   */
 
   @IntDef({WORKGROUP, SERVER, FILE_SHARE, PRINTER_SHARE, COMMS_SHARE, IPC_SHARE, DIR, FILE, LINK})
   @Retention(RetentionPolicy.SOURCE)

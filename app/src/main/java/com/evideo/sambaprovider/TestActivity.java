@@ -1,5 +1,6 @@
 package com.evideo.sambaprovider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import com.evideo.sambaprovider.browsing.Iconfig;
 import com.evideo.sambaprovider.browsing.NetworkBrowser;
 import com.evideo.sambaprovider.browsing.ServiceHelper;
 import com.evideo.sambaprovider.nativefacade.SmbFacade;
+import com.evideo.sambaprovider.provider.ByteBufferPool;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,6 +32,8 @@ public class TestActivity extends AppCompatActivity implements ServiceHelper.Ser
     private EditText mTvPath;
     private EditText mName, mPwd;
     private String mServiceName;
+    private TaskManager mTaskManager;
+    private ByteBufferPool mBufferPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +41,13 @@ public class TestActivity extends AppCompatActivity implements ServiceHelper.Ser
         setContentView(R.layout.activity_test);
         initData();
         initView();
+//        startService(new Intent(this, StreamService.class));
     }
 
     private void initData() {
         mClient = SambaProviderApplication.getSambaClient(this);
+        mTaskManager = SambaProviderApplication.getTaskManager(this);
+        mBufferPool = new ByteBufferPool();
     }
 
     private void initView() {
@@ -178,15 +185,42 @@ public class TestActivity extends AppCompatActivity implements ServiceHelper.Ser
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        stopService(new Intent(this, StreamService.class));
+    }
+
     public void openVideo(View view) {
-        String videoPath = mTvPath.getText().toString();
-        if(TextUtils.isEmpty(videoPath) || videoPath.endsWith(".mp4")){
+        final String videoPath = mTvPath.getText().toString();
+        if(TextUtils.isEmpty(videoPath) || !videoPath.endsWith(".mp4")){
             Toast.makeText(this, "MP4路径错误", Toast.LENGTH_SHORT).show();
-            return;
+//            return;
         }
+//        ParcelFileDescriptor[] pipe = null;
+//        try {
+//            pipe = ParcelFileDescriptor.createReliablePipe();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        final ReadFileTask task = new ReadFileTask(
+//                videoPath, mClient, pipe[0], mBufferPool);
+//        mTaskManager.runIoTask(task);
 
+        
 
+//        String mime = SambaUtil.getVideoMimeType(videoPath) + "";
+//        if (!String.valueOf(mime).toLowerCase().startsWith("video")) {
+//            Toast.makeText(this, "NOT a video file  " + mime, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        videoPath = SambaUtil.wrapStreamSmbURL(videoPath, NanoStreamer.INSTANCE().getIp(),
+//                NanoStreamer.INSTANCE().getPort());
 
+        Intent intent = new Intent();
+//        intent.putExtra(VideoActivity.ACTION_KEY_URL, pipe[0][1]);
+        intent.setClass(this, VideoActivity.class);
+        startActivity(intent);
 
     }
 }
